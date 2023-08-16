@@ -5,7 +5,7 @@ from openpyxl import load_workbook
 
 
 #Load data
-file = "C:\\Users\\bhearley\Box\\Software Tools Documentation\\Utility\\Summary.xlsx"
+file = "Summary.xlsx"
 DF = pd.read_excel(file)
 
 
