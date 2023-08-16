@@ -4,7 +4,7 @@ import streamlit as st
 
 
 #Load data
-file = "Summary.xlsx"
+file = "https://github.com/bhearley/SoftwareTools/blob/main/Summary.xlsx"
 DF = pd.read_excel(file)
 
 
