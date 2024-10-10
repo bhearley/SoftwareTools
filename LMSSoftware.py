@@ -172,7 +172,7 @@ ref_man = st.file_uploader('Upload Reference Manual(s)', accept_multiple_files=T
 other_files = st.file_uploader('Upload Other Documents', accept_multiple_files=True, key='other_files', help = "Other documents include example input/output decks, associated papers, reports, etc.")
 
 
-if st.submit('Save to Database'):
+if st.button('Save to Database'):
   @st.cache_resource
   def init_connection():
       uri = "mongodb+srv://nasagrc:" + st.secrets['mongo1']['password'] + "@nasagrclabdatatest.hnx1ick.mongodb.net/?retryWrites=true&w=majority&appName=NASAGRCLabDataTest"
