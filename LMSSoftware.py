@@ -232,7 +232,7 @@ if st.button('Save to Database'):
     for j in range(len(ref_man)):
       new_rec['Reference Manuals'].append(ref_man[j].getvalue())
 
-    new_rec['User Manuals'] =[]
+    new_rec['Other Files'] =[]
     for j in range(len(other_files)):
       new_rec['Other Files'].append(other_files[j].getvalue())
     
