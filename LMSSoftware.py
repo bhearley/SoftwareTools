@@ -173,19 +173,19 @@ other_files = st.file_uploader('Upload Other Documents', accept_multiple_files=T
 
 
 if st.button('Save to Database'):
-  @st.cache_resource
-  def init_connection():
-      uri = "mongodb+srv://nasagrc:" + st.secrets['mongo1']['password'] + "@nasagrclabdatatest.hnx1ick.mongodb.net/?retryWrites=true&w=majority&appName=NASAGRCLabDataTest"
-      return MongoClient(uri, tlsCAFile=certifi.where())
-  
-  # Create the Database Client
-  client = init_connection()
-  
-  # Send a ping to confirm a successful connection
-  try:
-      client.admin.command('ping')
-      st.write("Pinged your deployment. You successfully connected to MongoDB!")
-      print("Pinged your deployment. You successfully connected to MongoDB!")
-  except Exception as e:
-      st.write(e)
-      print(e)
+    @st.cache_resource
+    def init_connection():
+        uri = "mongodb+srv://nasagrc:" + st.secrets['mongo1']['password'] + "@nasagrclabdatatest.hnx1ick.mongodb.net/?retryWrites=true&w=majority&appName=NASAGRCLabDataTest"
+        return MongoClient(uri, tlsCAFile=certifi.where())
+    
+    # Create the Database Client
+    client = init_connection()
+    
+    # Send a ping to confirm a successful connection
+    try:
+        client.admin.command('ping')
+        st.write("Pinged your deployment. You successfully connected to MongoDB!")
+        print("Pinged your deployment. You successfully connected to MongoDB!")
+    except Exception as e:
+        st.write(e)
+        print(e)
