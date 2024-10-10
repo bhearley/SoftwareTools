@@ -227,5 +227,11 @@ if st.button('Save to Database'):
     # Load the Database and save the record
     db = client['LMS']
     collection = db['Software']
+
+    # Delete Record if it already exists
+    myquery = { "Name": tool_name}
+    collection.delete_one(myquery)
+
+    # Save New Record
     new_entry = collection.insert_one(new_rec)
     st.write('Saved to Database!')
