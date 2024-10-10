@@ -170,3 +170,22 @@ st.subheader('Manuals/References')
 user_man = st.file_uploader('Upload User Manual(s)', accept_multiple_files=True, key='user_man')
 ref_man = st.file_uploader('Upload Reference Manual(s)', accept_multiple_files=True, key='ref_man')
 other_files = st.file_uploader('Upload Other Documents', accept_multiple_files=True, key='other_files', help = "Other documents include example input/output decks, associated papers, reports, etc.")
+
+
+if st.submit('Save to Database'):
+  @st.cache_resource
+  def init_connection():
+      uri = "mongodb+srv://nasagrc:" + st.secrets['mongo1']['password'] + "@nasagrclabdatatest.hnx1ick.mongodb.net/?retryWrites=true&w=majority&appName=NASAGRCLabDataTest"
+      return MongoClient(uri, tlsCAFile=certifi.where())
+  
+  # Create the Database Client
+  client = init_connection()
+  
+  # Send a ping to confirm a successful connection
+  try:
+      client.admin.command('ping')
+      st.write("Pinged your deployment. You successfully connected to MongoDB!")
+      print("Pinged your deployment. You successfully connected to MongoDB!")
+  except Exception as e:
+      st.write(e)
+      print(e)
