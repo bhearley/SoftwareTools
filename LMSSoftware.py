@@ -223,6 +223,18 @@ if st.button('Save to Database'):
     new_rec['Source'] =[]
     for j in range(len(files)):
       new_rec['Source'].append(files[j].getvalue())
+
+    new_rec['User Manuals'] =[]
+    for j in range(len(user_man)):
+      new_rec['User Manuals'].append(user_man[j].getvalue())
+
+    new_rec['Reference Manuals'] =[]
+    for j in range(len(ref_man)):
+      new_rec['Reference Manuals'].append(ref_man[j].getvalue())
+
+    new_rec['User Manuals'] =[]
+    for j in range(len(other_files)):
+      new_rec['Other Files'].append(other_files[j].getvalue())
     
     # Load the Database and save the record
     db = client['LMS']
