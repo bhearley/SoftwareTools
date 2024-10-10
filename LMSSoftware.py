@@ -1,6 +1,8 @@
 # Import modules
 import streamlit as st
 from pymongo.mongo_client import MongoClient
+import dns
+import certifi
 
 # Page Layout
 st.set_page_config(layout="wide")
