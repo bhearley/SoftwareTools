@@ -186,8 +186,44 @@ if st.button('Save to Database'):
     # Send a ping to confirm a successful connection
     try:
         client.admin.command('ping')
-        st.write("Pinged your deployment. You successfully connected to MongoDB!")
         print("Pinged your deployment. You successfully connected to MongoDB!")
     except Exception as e:
         st.write(e)
         print(e)
+
+    # Create the new record
+    new_rec = {}
+    new_rec['Name'] = tool_name
+    new_rec['Version'] = version
+    new_rec['Point of Contact'] = poc
+    new_rec['Description'] = tool_desc
+    new_rec['Keywords'] = keywords
+    new_rec['Classification'] = tool_class
+    new_rec['Classification Other'] = tool_class_other
+    new_rec['Material Applicability'] = tool_mat
+    new_rec['Material Applicability Other'] = tool_mat_other
+    new_rec['Material Directionality'] = mat_direc
+    new_rec['Material Scope'] = mat_scope
+    new_rec['Material Deformation'] = mat_def
+    new_rec['Material Response'] = mat_response
+    new_rec['Length Scale'] = mat_length
+    new_rec['Time Scale'] = mat_time
+    new_rec['Multiaxiality'] = mat_ax
+    new_rec['Material Directionality'] = mat_direc
+    new_rec['Security Classification] = sec_class
+    new_rec['Availability'] = sec_avail
+    new_rec['Sensitivity'] = sec_sens
+    new_rec['Distribution'] = sec_dist
+    new_rec['Time Scale'] = mat_time
+    new_rec['OS'] = req_os
+    if add_softnum > 0:
+      new_rec['Required Software'] = add_soft
+    
+    # ADD FILES
+  
+    
+    # Load the Database and save the record
+    db = client['LMS']
+    collection = db['Software']
+    new_entry = collection.insert_one(new_data)
+    st.write('Saved to Database!')
