@@ -220,7 +220,7 @@ if st.button('Save to Database'):
       new_rec['Required Software'] = add_soft
     
     # ADD FILES
-  
+    new_rec['Source'] = files
     
     # Load the Database and save the record
     db = client['LMS']
