@@ -210,7 +210,7 @@ if st.button('Save to Database'):
     new_rec['Time Scale'] = mat_time
     new_rec['Multiaxiality'] = mat_ax
     new_rec['Material Directionality'] = mat_direc
-    new_rec['Security Classification] = sec_class
+    new_rec['Security Classification'] = sec_class
     new_rec['Availability'] = sec_avail
     new_rec['Sensitivity'] = sec_sens
     new_rec['Distribution'] = sec_dist
