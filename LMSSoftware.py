@@ -225,5 +225,5 @@ if st.button('Save to Database'):
     # Load the Database and save the record
     db = client['LMS']
     collection = db['Software']
-    new_entry = collection.insert_one(new_data)
+    new_entry = collection.insert_one(new_rec)
     st.write('Saved to Database!')
