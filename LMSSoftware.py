@@ -216,7 +216,7 @@ if st.button('Save to Database'):
     new_rec['Distribution'] = sec_dist
     new_rec['Time Scale'] = mat_time
     new_rec['OS'] = req_os
-    if add_softnum > 0:
+    if add_soft_num > 0:
       new_rec['Required Software'] = add_soft
     
     # ADD FILES
