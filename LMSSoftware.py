@@ -208,7 +208,7 @@ if st.button('Save to Database'):
       st.error('Tool Description must be populated.')
       err_flag = 1
 
-   if tool_lang == '' and tool_lang_other == '':
+    if tool_lang == '' and tool_lang_other == '':
       st.error('Programming Language must be populated.')
       err_flag = 1
 
