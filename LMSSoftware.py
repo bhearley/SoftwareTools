@@ -178,7 +178,7 @@ if st.button('Save to Database'):
     # Security Check
     # -- If data is  Publicly Available and Not Sensitive, upload via MongoDB
     if sec_avail == 'Publicly Available' or sec_avail == '':
-      if sec_sens = 'None' or sec_sens == '':
+      if sec_sens == 'None' or sec_sens == '':
         @st.cache_resource
         def init_connection():
             uri = "mongodb+srv://nasagrc:" + st.secrets['mongo1']['password'] + "@nasagrclabdatatest.hnx1ick.mongodb.net/?retryWrites=true&w=majority&appName=NASAGRCLabDataTest"
