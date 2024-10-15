@@ -174,6 +174,12 @@ ref_man = st.file_uploader('Upload Reference Manual(s)', accept_multiple_files=T
 other_files = st.file_uploader('Upload Other Documents', accept_multiple_files=True, key='other_files', help = "Other documents include example input/output decks, associated papers, reports, etc.")
 
 sec_flag = 0
+# Security Check
+# -- If data is  Publicly Available and Not Sensitive, upload via MongoDB
+sec_flag = 0  # Security Control Flag 
+if sec_avail == [] or 'Publicly Available' in sec_avail:
+  if sec_sens == [] or 'None' in sec_sens:
+    sec_flag = 1
 if st.button('Save to Database'):
     # Create the new record
     new_rec = {}
@@ -220,13 +226,6 @@ if st.button('Save to Database'):
     for j in range(len(other_files)):
       new_rec['Other Files'].append([other_files[j].getvalue(),other_files[j].name])
   
-    # Security Check
-    # -- If data is  Publicly Available and Not Sensitive, upload via MongoDB
-    sec_flag = 0  # Security Control Flag 
-    if sec_avail == [] or 'Publicly Available' in sec_avail:
-      if sec_sens == [] or 'None' in sec_sens:
-        sec_flag = 1
-
     # Write to MongoDB
     if sec_flag == 1:
       # Connect to Database 
