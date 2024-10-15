@@ -181,89 +181,95 @@ if sec_avail == [] or 'Publicly Available' in sec_avail:
   if sec_sens == [] or 'None' in sec_sens:
     sec_flag = 1
 if st.button('Save to Database'):
-    # Create the new record
-    new_rec = {}
-    new_rec['Name'] = tool_name
-    new_rec['Version'] = version
-    new_rec['Point of Contact'] = poc
-    new_rec['Description'] = tool_desc
-    new_rec['Keywords'] = keywords
-    new_rec['Classification'] = tool_class
-    new_rec['Classification Other'] = tool_class_other
-    new_rec['Material Applicability'] = tool_mat
-    new_rec['Material Applicability Other'] = tool_mat_other
-    new_rec['Material Directionality'] = mat_direc
-    new_rec['Material Scope'] = mat_scope
-    new_rec['Material Deformation'] = mat_def
-    new_rec['Material Response'] = mat_response
-    new_rec['Length Scale'] = mat_length
-    new_rec['Time Scale'] = mat_time
-    new_rec['Multiaxiality'] = mat_ax
-    new_rec['Material Directionality'] = mat_direc
-    new_rec['Security Classification'] = sec_class
-    new_rec['Availability'] = sec_avail
-    new_rec['Sensitivity'] = sec_sens
-    new_rec['Distribution'] = sec_dist
-    new_rec['Time Scale'] = mat_time
-    new_rec['OS'] = req_os
-    if add_soft_num > 0:
-      new_rec['Required Software'] = add_soft
+    # Error Checking
+    err_flag = 1
+    # -- Required Attributes
+    st.write(tool_name)
+
+    if err_flag == 0:
+      # Create the new record
+      new_rec = {}
+      new_rec['Name'] = tool_name
+      new_rec['Version'] = version
+      new_rec['Point of Contact'] = poc
+      new_rec['Description'] = tool_desc
+      new_rec['Keywords'] = keywords
+      new_rec['Classification'] = tool_class
+      new_rec['Classification Other'] = tool_class_other
+      new_rec['Material Applicability'] = tool_mat
+      new_rec['Material Applicability Other'] = tool_mat_other
+      new_rec['Material Directionality'] = mat_direc
+      new_rec['Material Scope'] = mat_scope
+      new_rec['Material Deformation'] = mat_def
+      new_rec['Material Response'] = mat_response
+      new_rec['Length Scale'] = mat_length
+      new_rec['Time Scale'] = mat_time
+      new_rec['Multiaxiality'] = mat_ax
+      new_rec['Material Directionality'] = mat_direc
+      new_rec['Security Classification'] = sec_class
+      new_rec['Availability'] = sec_avail
+      new_rec['Sensitivity'] = sec_sens
+      new_rec['Distribution'] = sec_dist
+      new_rec['Time Scale'] = mat_time
+      new_rec['OS'] = req_os
+      if add_soft_num > 0:
+        new_rec['Required Software'] = add_soft
+      
+      # ADD FILES
+      new_rec['Source'] =[]
+      for j in range(len(files)):
+        new_rec['Source'].append(files[j].getvalue())
+  
+      new_rec['User Manuals'] =[]
+      for j in range(len(user_man)):
+        new_rec['User Manuals'].append([user_man[j].getvalue(), user_man[j].name])
+  
+      new_rec['Reference Manuals'] =[]
+      for j in range(len(ref_man)):
+        new_rec['Reference Manuals'].append([ref_man[j].getvalue(),ref_man[j].name])
+  
+      new_rec['Other Files'] =[]
+      for j in range(len(other_files)):
+        new_rec['Other Files'].append([other_files[j].getvalue(),other_files[j].name])
     
-    # ADD FILES
-    new_rec['Source'] =[]
-    for j in range(len(files)):
-      new_rec['Source'].append(files[j].getvalue())
-
-    new_rec['User Manuals'] =[]
-    for j in range(len(user_man)):
-      new_rec['User Manuals'].append([user_man[j].getvalue(), user_man[j].name])
-
-    new_rec['Reference Manuals'] =[]
-    for j in range(len(ref_man)):
-      new_rec['Reference Manuals'].append([ref_man[j].getvalue(),ref_man[j].name])
-
-    new_rec['Other Files'] =[]
-    for j in range(len(other_files)):
-      new_rec['Other Files'].append([other_files[j].getvalue(),other_files[j].name])
+      # Write to MongoDB
+      if sec_flag == 1:
+        # Connect to Database 
+        @st.cache_resource
+        def init_connection():
+            uri = "mongodb+srv://nasagrc:" + st.secrets['mongo1']['password'] + "@nasagrclabdatatest.hnx1ick.mongodb.net/?retryWrites=true&w=majority&appName=NASAGRCLabDataTest"
+            return MongoClient(uri, tlsCAFile=certifi.where())
+        
+        # Create the Database Client
+        client = init_connection()
+        
+        # Send a ping to confirm a successful connection
+        try:
+            client.admin.command('ping')
+            print("Pinged your deployment. You successfully connected to MongoDB!")
+        except Exception as e:
+            st.write(e)
+            print(e)
+       
+        # Load the Database and save the record
+        db = client['LMS']
+        collection = db['Software']
+    
+        # Delete Record if it already exists
+        myquery = { "Name": tool_name}
+        collection.delete_one(myquery)
+    
+        # Save New Record
+        new_entry = collection.insert_one(new_rec)
+        st.write('Saved to Database!')
   
-    # Write to MongoDB
-    if sec_flag == 1:
-      # Connect to Database 
-      @st.cache_resource
-      def init_connection():
-          uri = "mongodb+srv://nasagrc:" + st.secrets['mongo1']['password'] + "@nasagrclabdatatest.hnx1ick.mongodb.net/?retryWrites=true&w=majority&appName=NASAGRCLabDataTest"
-          return MongoClient(uri, tlsCAFile=certifi.where())
-      
-      # Create the Database Client
-      client = init_connection()
-      
-      # Send a ping to confirm a successful connection
-      try:
-          client.admin.command('ping')
-          print("Pinged your deployment. You successfully connected to MongoDB!")
-      except Exception as e:
-          st.write(e)
-          print(e)
-     
-      # Load the Database and save the record
-      db = client['LMS']
-      collection = db['Software']
-  
-      # Delete Record if it already exists
-      myquery = { "Name": tool_name}
-      collection.delete_one(myquery)
-  
-      # Save New Record
-      new_entry = collection.insert_one(new_rec)
-      st.write('Saved to Database!')
-
-    else:
-      # Write Data to text file and have user upload to box
-      data_out = ''
-      keys = list(new_rec.keys())
-      for i in range(len(keys)):
-          data_out = data_out + str(keys[i]) + ': ' + str(new_rec[keys[i]]) + '\n'
-      st.download_button('Download Sensative Data File', data_out, file_name = tool_name + '.txt')
+      else:
+        # Write Data to text file and have user upload to box
+        data_out = ''
+        keys = list(new_rec.keys())
+        for i in range(len(keys)):
+            data_out = data_out + str(keys[i]) + ': ' + str(new_rec[keys[i]]) + '\n'
+        st.download_button('Download Sensative Data File', data_out, file_name = tool_name + '.txt')
       
 if sec_flag == 0:
   st.write('Download the text file and upload to: https://nasagov.app.box.com/f/d6c56ef2755b49f8a64429662e3196f4')
