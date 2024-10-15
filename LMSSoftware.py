@@ -259,9 +259,5 @@ if st.button('Save to Database'):
       st.write('Saved to Database!')
 
     else:
-      # Write Data to pkl
-      with open(tool_name + ".pkl", "wb") as file:
-        # Dump the data into the file
-        pickle.dump(new_rec, file)
-
+      # Write Data to text file and have user upload to box
       st.download_button('Download Sensative Data File', new_rec, file_name = tool_name + '.txt')
