@@ -173,7 +173,7 @@ user_man = st.file_uploader('Upload User Manual(s)', accept_multiple_files=True,
 ref_man = st.file_uploader('Upload Reference Manual(s)', accept_multiple_files=True, key='ref_man')
 other_files = st.file_uploader('Upload Other Documents', accept_multiple_files=True, key='other_files', help = "Other documents include example input/output decks, associated papers, reports, etc.")
 
-
+sec_flag = 0
 if st.button('Save to Database'):
     # Create the new record
     new_rec = {}
