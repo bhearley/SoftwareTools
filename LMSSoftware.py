@@ -264,6 +264,7 @@ if st.button('Save to Database'):
       keys = list(new_rec.keys())
       for i in range(len(keys)):
           data_out = data_out + str(keys[i]) + ': ' + str(new_rec[keys[i]]) + '\n'
-
-      st.write('Download the text file and upload to: https://nasagov.app.box.com/f/d6c56ef2755b49f8a64429662e3196f4')
       st.download_button('Download Sensative Data File', data_out, file_name = tool_name + '.txt')
+      
+if sec_flag == 0:
+  st.write('Download the text file and upload to: https://nasagov.app.box.com/f/d6c56ef2755b49f8a64429662e3196f4')
