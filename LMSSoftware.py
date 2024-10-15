@@ -260,4 +260,8 @@ if st.button('Save to Database'):
 
     else:
       # Write Data to text file and have user upload to box
-      st.download_button('Download Sensative Data File', new_rec, file_name = tool_name + '.txt')
+      data_out = ''
+      keys = list(new_rec.keys())
+      for i in range(len(keys)):
+          data_out = data_out + str(keys[i]) + ': ' + str(new_rec[keys[i]]) + '\n'
+      st.download_button('Download Sensative Data File', data_out, file_name = tool_name + '.txt')
