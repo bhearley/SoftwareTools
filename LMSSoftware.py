@@ -261,7 +261,7 @@ if st.button('Save to Database'):
 
     else:
       # Write Data to pkl
-      with open(name + ".pkl", "wb") as file:
+      with open(tool_name + ".pkl", "wb") as file:
         # Dump the data into the file
         pickle.dump(new_rec, file)
 
