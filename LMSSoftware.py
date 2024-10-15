@@ -184,7 +184,9 @@ if st.button('Save to Database'):
     # Error Checking
     err_flag = 1
     # -- Required Attributes
-    st.write(tool_name)
+    if tool_name == '':
+      st.error('Tool Name must be populated')
+      err_flag = 1
 
     if err_flag == 0:
       # Create the new record
