@@ -234,7 +234,7 @@ if st.button('Save to Database'):
 
     new_rec['Other Files'] =[]
     for j in range(len(other_files)):
-      new_rec['Other Files'].append(other_files[j].getvalue(),other_files[j].name])
+      new_rec['Other Files'].append([other_files[j].getvalue(),other_files[j].name])
     
     # Load the Database and save the record
     db = client['LMS']
