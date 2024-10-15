@@ -182,7 +182,7 @@ if sec_avail == [] or 'Publicly Available' in sec_avail:
     sec_flag = 1
 if st.button('Save to Database'):
     # Error Checking
-    err_flag = 1
+    err_flag = 0
     # -- Required Attributes
     if tool_name == '':
       st.error('Software Tool Name must be populated.')
