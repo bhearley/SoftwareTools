@@ -22,7 +22,7 @@ version = st.text_input("Version:",value='', key = 'version')
 poc = st.text_input("Point of Contact:",value='', key = 'poc')
 tool_desc = st.text_area("Tool Desciption:",value='', key = 'tool_desc')
 keywords = st.text_area("Keywords:",value='', key = 'keywords', help = 'Enter keywords as comma separated list')
-files = st.file_uploader('Upload Code', accept_multiple_files=True, key='file', help='Upload Compressed Folder For Storage in GitHub')
+files = st.file_uploader('Upload Code', accept_multiple_files=True, type = ['zip'], key='file', help='Upload Compressed Folder For Storage in GitHub')
 
 # Tool Applicaiton
 st.subheader('Tool Application')
@@ -185,7 +185,15 @@ if st.button('Save to Database'):
     err_flag = 1
     # -- Required Attributes
     if tool_name == '':
-      st.error('Tool Name must be populated')
+      st.error('Software Tool Name must be populated.')
+      err_flag = 1
+
+    if poc == '':
+      st.error('Point of Contact must be populated.')
+      err_flag = 1
+  
+    if tool_desc == '':
+      st.error('Tool Description must be populated.')
       err_flag = 1
 
     if err_flag == 0:
