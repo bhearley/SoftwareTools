@@ -265,4 +265,4 @@ if st.button('Save to Database'):
         # Dump the data into the file
         pickle.dump(new_rec, file)
 
-      st.download_button('Download Sensative Data File', file, file_name = file
+      st.download_button('Download Sensative Data File', file, file_name = file)
