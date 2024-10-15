@@ -11,7 +11,7 @@ st.set_page_config(layout="wide")
 st.title("LMS Software Repository Tool")
 
 # Instructions
-st.markdown('Placeholder for instructions... \n \n')
+st.markdown("The LMS Software Repository Tool is used to capture and catalog all sofware developed by LMS at NASA GRC. Please enter the information into the fields below for each tool developed. Additionally, supply a zip file containing source code in the file selector, as well has any additional files (User Manul's, Reference Manuals, Input/Output Decks, etc.) where asked. Non-senstivie data is directly written to a MongoDB database, whereas sensative data will be saved locally as a text file that must be uploaded to the provided box link. All source code and supplementary files are saved to the LMS Github (https://github.com/bhearley/LMS-Software) and all additional information will be stored in Granta MI with links to the GitHub for each tool (https://granta.ndc.nasa.gov/mi/). Please contact Brandon Hearley (brandon.l.hearley@nasa.gov) for any questions/issues regarding the data collection tool or access to the GitHub and Granta MI. \n \n')
 
 st.markdown('''---''')
 
@@ -23,6 +23,18 @@ poc = st.text_input("Point of Contact:",value='', key = 'poc')
 tool_desc = st.text_area("Tool Desciption:",value='', key = 'tool_desc')
 keywords = st.text_area("Keywords:",value='', key = 'keywords', help = 'Enter keywords as comma separated list')
 files = st.file_uploader('Upload Code', accept_multiple_files=True, type = ['zip'], key='file', help='Upload Compressed Folder For Storage in GitHub')
+lang_opts = ['Python', 
+             'MATLAB',
+             'FORTRAN', 
+             'C++', 
+             'C#', 
+             'R',
+             'Java',
+             'SQL',
+             'HTML',
+             'Other']
+tool_lang = st.multiselect('Programming Language:', lang_opts, key='tool_lang')
+tool_lang_other = st.text_input("Programming Languag (Other):",value='', key = 'tool_lang_other')
 
 # Tool Applicaiton
 st.subheader('Tool Application')
@@ -196,6 +208,10 @@ if st.button('Save to Database'):
       st.error('Tool Description must be populated.')
       err_flag = 1
 
+   if tool_lang == '' and tool_lang_other == '':
+      st.error('Programming Language must be populated.')
+      err_flag = 1
+
     if err_flag == 0:
       # Create the new record
       new_rec = {}
@@ -204,6 +220,7 @@ if st.button('Save to Database'):
       new_rec['Point of Contact'] = poc
       new_rec['Description'] = tool_desc
       new_rec['Keywords'] = keywords
+      new_rec['Langauge'] = tool_lang
       new_rec['Classification'] = tool_class
       new_rec['Classification Other'] = tool_class_other
       new_rec['Material Applicability'] = tool_mat
