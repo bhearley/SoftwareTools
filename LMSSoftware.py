@@ -3,7 +3,6 @@ import streamlit as st
 from pymongo.mongo_client import MongoClient
 import dns
 import certifi
-import pickle
 
 # Page Layout
 st.set_page_config(layout="wide")
@@ -265,4 +264,4 @@ if st.button('Save to Database'):
         # Dump the data into the file
         pickle.dump(new_rec, file)
 
-      st.download_button('Download Sensative Data File', file, file_name = file)
+      st.download_button('Download Sensative Data File', new_rec, file_name = tool_name + '.txt')
