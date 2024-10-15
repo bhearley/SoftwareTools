@@ -226,6 +226,7 @@ if st.button('Save to Database'):
 
     new_rec['User Manuals'] =[]
     for j in range(len(user_man)):
+      st.write(user_man[j].getvalue())
       new_rec['User Manuals'].append(user_man[j].getvalue())
 
     new_rec['Reference Manuals'] =[]
