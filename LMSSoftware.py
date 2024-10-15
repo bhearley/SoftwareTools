@@ -177,6 +177,8 @@ other_files = st.file_uploader('Upload Other Documents', accept_multiple_files=T
 if st.button('Save to Database'):
     # Security Check
     # -- If data is  Publicly Available and Not Sensitive, upload via MongoDB
+    st.write(sec_avail)
+    st.write(sec_Sns)
     if sec_avail == 'Publicly Available' or sec_avail == '':
       if sec_sens == 'None' or sec_sens == '':
         @st.cache_resource
