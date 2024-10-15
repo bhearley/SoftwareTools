@@ -183,7 +183,7 @@ if st.button('Save to Database'):
         sec_flag = 1
 
     # Write to MongoDB
-    if secflag = 1:
+    if sec_flag == 1:
       # Connect to Database 
       @st.cache_resource
       def init_connection():
