@@ -3,6 +3,7 @@ import streamlit as st
 from pymongo.mongo_client import MongoClient
 import dns
 import certifi
+import pickle
 
 # Page Layout
 st.set_page_config(layout="wide")
@@ -175,6 +176,51 @@ other_files = st.file_uploader('Upload Other Documents', accept_multiple_files=T
 
 
 if st.button('Save to Database'):
+    # Create the new record
+    new_rec = {}
+    new_rec['Name'] = tool_name
+    new_rec['Version'] = version
+    new_rec['Point of Contact'] = poc
+    new_rec['Description'] = tool_desc
+    new_rec['Keywords'] = keywords
+    new_rec['Classification'] = tool_class
+    new_rec['Classification Other'] = tool_class_other
+    new_rec['Material Applicability'] = tool_mat
+    new_rec['Material Applicability Other'] = tool_mat_other
+    new_rec['Material Directionality'] = mat_direc
+    new_rec['Material Scope'] = mat_scope
+    new_rec['Material Deformation'] = mat_def
+    new_rec['Material Response'] = mat_response
+    new_rec['Length Scale'] = mat_length
+    new_rec['Time Scale'] = mat_time
+    new_rec['Multiaxiality'] = mat_ax
+    new_rec['Material Directionality'] = mat_direc
+    new_rec['Security Classification'] = sec_class
+    new_rec['Availability'] = sec_avail
+    new_rec['Sensitivity'] = sec_sens
+    new_rec['Distribution'] = sec_dist
+    new_rec['Time Scale'] = mat_time
+    new_rec['OS'] = req_os
+    if add_soft_num > 0:
+      new_rec['Required Software'] = add_soft
+    
+    # ADD FILES
+    new_rec['Source'] =[]
+    for j in range(len(files)):
+      new_rec['Source'].append(files[j].getvalue())
+
+    new_rec['User Manuals'] =[]
+    for j in range(len(user_man)):
+      new_rec['User Manuals'].append([user_man[j].getvalue(), user_man[j].name])
+
+    new_rec['Reference Manuals'] =[]
+    for j in range(len(ref_man)):
+      new_rec['Reference Manuals'].append([ref_man[j].getvalue(),ref_man[j].name])
+
+    new_rec['Other Files'] =[]
+    for j in range(len(other_files)):
+      new_rec['Other Files'].append([other_files[j].getvalue(),other_files[j].name])
+  
     # Security Check
     # -- If data is  Publicly Available and Not Sensitive, upload via MongoDB
     sec_flag = 0  # Security Control Flag 
@@ -200,52 +246,7 @@ if st.button('Save to Database'):
       except Exception as e:
           st.write(e)
           print(e)
-  
-      # Create the new record
-      new_rec = {}
-      new_rec['Name'] = tool_name
-      new_rec['Version'] = version
-      new_rec['Point of Contact'] = poc
-      new_rec['Description'] = tool_desc
-      new_rec['Keywords'] = keywords
-      new_rec['Classification'] = tool_class
-      new_rec['Classification Other'] = tool_class_other
-      new_rec['Material Applicability'] = tool_mat
-      new_rec['Material Applicability Other'] = tool_mat_other
-      new_rec['Material Directionality'] = mat_direc
-      new_rec['Material Scope'] = mat_scope
-      new_rec['Material Deformation'] = mat_def
-      new_rec['Material Response'] = mat_response
-      new_rec['Length Scale'] = mat_length
-      new_rec['Time Scale'] = mat_time
-      new_rec['Multiaxiality'] = mat_ax
-      new_rec['Material Directionality'] = mat_direc
-      new_rec['Security Classification'] = sec_class
-      new_rec['Availability'] = sec_avail
-      new_rec['Sensitivity'] = sec_sens
-      new_rec['Distribution'] = sec_dist
-      new_rec['Time Scale'] = mat_time
-      new_rec['OS'] = req_os
-      if add_soft_num > 0:
-        new_rec['Required Software'] = add_soft
-      
-      # ADD FILES
-      new_rec['Source'] =[]
-      for j in range(len(files)):
-        new_rec['Source'].append(files[j].getvalue())
-  
-      new_rec['User Manuals'] =[]
-      for j in range(len(user_man)):
-        new_rec['User Manuals'].append([user_man[j].getvalue(), user_man[j].name])
-  
-      new_rec['Reference Manuals'] =[]
-      for j in range(len(ref_man)):
-        new_rec['Reference Manuals'].append([ref_man[j].getvalue(),ref_man[j].name])
-  
-      new_rec['Other Files'] =[]
-      for j in range(len(other_files)):
-        new_rec['Other Files'].append([other_files[j].getvalue(),other_files[j].name])
-      
+     
       # Load the Database and save the record
       db = client['LMS']
       collection = db['Software']
@@ -257,3 +258,11 @@ if st.button('Save to Database'):
       # Save New Record
       new_entry = collection.insert_one(new_rec)
       st.write('Saved to Database!')
+
+    else:
+      # Write Data to pkl
+      with open(name + ".pkl", "wb") as file:
+        # Dump the data into the file
+        pickle.dump(new_rec, file)
+
+      st.download_button('Download Sensative Data File', file, file_name = file
